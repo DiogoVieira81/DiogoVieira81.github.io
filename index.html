@@ -5,19 +5,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personal Website</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/devicon@2.14.0/devicon.min.css">
     <style>
         body {
             padding-top: 56px;
+            font-family: 'Roboto', sans-serif;
         }
 
         .profile-img {
             max-width: 250px;
             border-radius: 50%;
+            margin-right: 60px; /* Add margin-right for spacing */
+            margin-bottom: 20px;
         }
 
         .section {
             padding: 40px 0;
+        }
+
+        h2 {
+            font-weight: 700;
+            /* Bold */
+        }
+
+        p {
+            font-weight: 400;
+            /* Normal */
+        }
+
+        .devicon {
+            font-size: 48px; /* Adjust the size as needed */
+            margin: 0 auto;  /* Center the icons */
+            display: block;  /* Ensure icons are block-level elements */
         }
     </style>
 </head>
@@ -28,12 +51,12 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
             <a class="navbar-brand" href="#">Diogo Vieira</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
                 aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ml-auto">
+                <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="#bio">Bio</a>
                     </li>
@@ -47,6 +70,9 @@
                         <a class="nav-link" href="#professional">Professional Experience</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="#skills">Skills</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#contacts">Contacts</a>
                     </li>
                     <li class="nav-item">
@@ -58,71 +84,83 @@
     </nav>
 
     <!-- Bio Section -->
-    <section id="bio" class="section text-right">
+    <section id="bio" class="section mt-5 text-end">
         <div class="container">
-            <img src="assets/images/Ativo 2.png" alt="Profile Photo" class="profile-img img-fluid float-left">
-            <h2 style="text-align: left;">Bio</h2>
-            <p style="text-align: justify;">I'm Diogo, 26 years old. In 2020, I made a deliberate shift towards
-                Computer Science & Engineering to establish myself in this ever-evolving field. My educational
-                journey
-                has cultivated adaptability and
-                a multidisciplinary problem-solving approach. I'm enthusiastic about a
-                tech career, where I can apply creativity and technical skills to innovate
-                and make a meaningful impact. <strong>I'm currently searching for an internship in the tech
-                    field.</strong>
-            </p>
+            <div class="row">
+                <div class="col-md-4 col-12 mb-3 clearfix">
+                    <img src="assets/images/Ativo 2.png" alt="Profile Photo" class="profile-img img-fluid mx-auto d-block">
+                </div>
+                <div class="col-md-8 col-12">
+                    <h2 class="text-start">Bio</h2>
+                    <p class="text-justify">I'm Diogo, 26 years old. In 2020, I made a deliberate shift towards Computer
+                        Science
+                        & Engineering to establish myself in this ever-evolving field. My educational journey has
+                        cultivated
+                        adaptability and a multidisciplinary problem-solving approach. I'm enthusiastic about a tech
+                        career,
+                        where I can apply creativity and technical skills to innovate and make a meaningful impact.
+                        <strong>I'm
+                            currently searching for an internship in the tech field.</strong>
+                    </p>
+                </div>
+            </div>
         </div>
-    </section>
-    <!-- Academic Experience Section -->
-    <section id="projects" class="section text-center">
-        <div class="container">
-            <h2>Projects</h2>
-        </div>
-    </section>
-    <section id="projects2" class="section text-left">
-        <div class="container">
-            <h6>Recicla Têxtil -
-                <a
-                    href="https://github.com/DiogoVieira81/ReciclaTextil.git">https://github.com/DiogoVieira81/ReciclaTextil.git</a>
-            </h6>
-            <p style="text-align:justify">In this project I was responsible for writing the controllers in the backend
-                and helping out in the frontend. The app consisted in serving as intermediate between donors and
-                entities that received the donations. The app should allow the donors to make monetary donations as well
-                as physical donations i.e. clothing.
-            </p>
-            <h6>Robocode - A.I robot - <a
-                    href="https://github.com/heyliceeee/robocodeIA.git">https://github.com/heyliceeee/robocodeIA.git</a>
-            </h6>
-            <p style="text-align:justify">In this project I was responsible for creating the robot that would generate
-                the training dataset to further train the models used to incorporate in the final robot.
-            </p>
     </section>
 
+    <!-- Projects Section -->
+    <section id="projects" class="section bg-light">
+        <div class="container">
+            <h2 class="text-center">Projects</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Recicla Têxtil</h5>
+                            <p class="card-text">In this project I was responsible for writing the controllers in the
+                                backend
+                                and helping out in the frontend...</p>
+                            <a href="https://github.com/DiogoVieira81/ReciclaTextil.git" class="btn btn-primary"
+                                target="_blank">View Project</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="card-title">Robocode - A.I robot</h5>
+                            <p class="card-text">In this project I was responsible for creating the robot that would
+                                generate
+                                the training dataset...</p>
+                            <a href="https://github.com/heyliceeee/robocodeIA.git" class="btn btn-primary"
+                                target="_blank">View Project</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
     <!-- Academic Experience Section -->
-    <section id="academic" class="section text-center">
+    <section id="academic" class="section bg-light text-center">
         <div class="container">
             <h2>Academic Experience</h2>
         </div>
     </section>
-    <section id="academic2" class="section text-left">
+    <section id="academic2" class="section text-start">
         <div class="container">
             <h6>Bachelor’s degree - Computer Science & Engineering | ESTG-Polytechnic of Porto | 2020-25</h6>
-            <p style="text-align:justify">In this bachelor’s degree, which I’m currently undergoing, I had the
-                opportunity to experiment with various
-                programming languages from C to Pyhton and SQL while also learn about software engineering, Agile,
-                Scrum, Project Management, Data Science among other subjects. I’m the most comfortable working with
-                Java.</p>
+            <p class="text-justify">In this bachelor’s degree, which I’m currently undergoing, I had the opportunity to
+                experiment with various programming languages from C to Python and SQL while also learn about software
+                engineering, Agile, Scrum, Project Management, Data Science among other subjects. I’m the most
+                comfortable working with Java.</p>
             <h6>CET - Footwear Design | CFPIC | oct 2017 a set 2018 (16)</h6>
-            <p style="text-align:justify">In this 1-year course I got the opportunity to learn about the creative
-                process involved in footwear design,
-                from marketing, developing a brand, the definition of the design concept to the development of the shoe,
-                pattern making manually and with Computer Aided Design both in women’s and men’s footwear, graphic
-                design learning Adobe Photoshop, Adobe Illustrator and InDesign.
+            <p class="text-justify">In this 1-year course I got the opportunity to learn about the creative process
+                involved in footwear design, from marketing, developing a brand, the definition of the design concept to
+                the development of the shoe, pattern making manually and with Computer Aided Design both in women’s and
+                men’s footwear, graphic design learning Adobe Photoshop, Adobe Illustrator and InDesign.
             </p>
         </div>
-    </section>
-
-    </div>
     </section>
 
     <!-- Professional Experience Section -->
@@ -131,32 +169,63 @@
             <h2>Professional Experience</h2>
         </div>
     </section>
-    <section id="professional2" class="section bg-light text-left">
+    <section id="professional2" class="section text-start">
         <div class="container">
-            <h6>Store Operador | Mercadona | fev 2023 – present</h6>
-            <p style="text-align:justify">In this role I’m responsible mainly for cleaning the store in the early
-                morning period before the opening but
-                I’m also trained as a fishmonger, cashier, and stocker.
+            <h6>Store Operator | Mercadona | Feb 2023 – present</h6>
+            <p class="text-justify">In this role I’m responsible mainly for cleaning the store in the early morning
+                period before the opening but I’m also trained as a fishmonger, cashier, and stocker.
             </p>
-            <h6>Store Operator | Sonae MC | jun 2021 a jun 2022</h6>
-            <p style="text-align:justify">In this role I was responsible for serving the customer as a Charcutarie and
-                for closing the section, cleaning
-                and organizing everything according to the company’s guidelines.
+            <h6>Store Operator | Sonae MC | Jun 2021 to Jun 2022</h6>
+            <p class="text-justify">In this role I was responsible for serving the customer as a Charcuterie and for
+                closing the section, cleaning and organizing everything according to the company’s guidelines.
             </p>
-            <h6>Technical illustrator| Diferentefeito | oct 2018 a oct 2020</h6>
-            <p style="text-align:justify">In this role I was responsible for preparing the samples requested by the
-                customer. It involved the
-                compilation of the material and accessory lists for production and the definition of suitable work
-                methods.
-                I was also responsible for maintaining contact with the costumer regarding any technical issues involved
-                in
-                the product development and to maintain support for the quality control of the production process.
+            <h6>Technical Illustrator | Diferentefeito | Oct 2018 to Oct 2020</h6>
+            <p class="text-justify">In this role I was responsible for preparing the samples requested by the customer.
+                It involved the compilation of the material and accessory lists for production and the definition of
+                suitable work methods. I was also responsible for maintaining contact with the customer regarding any
+                technical issues involved in the product development and to maintain support for the quality control of
+                the production process.
             </p>
         </div>
     </section>
 
+    <!-- Skills Section -->
+    <section id="skills" class="section bg-light text-center">
+        <div class="container">
+            <h2>Skills</h2>
+        </div>
+    </section>
+    <section id="skills2" class="section text-start">
+        <div class="row text-center">
+            <div class="col-6 col-md-3 mb-4">
+                <i class="devicon-c-plain devicon"></i> <!-- C -->
+            </div>
+            <div class="col-6 col-md-3 mb-4">
+                <i class="devicon-java-plain devicon"></i> <!-- Java -->
+            </div>
+            <div class="col-6 col-md-3 mb-4">
+                <i class="devicon-nodejs-plain devicon"></i> <!-- NodeJS -->
+            </div>
+            <div class="col-6 col-md-3 mb-4">
+                <i class="devicon-angularjs-plain devicon"></i> <!-- Angular -->
+            </div>
+            <div class="col-6 col-md-3 mb-4">
+                <i class="devicon-mongodb-plain devicon"></i> <!-- MongoDB -->
+            </div>
+            <div class="col-6 col-md-3 mb-4">
+                <i class="devicon-python-plain devicon"></i> <!-- Python -->
+            </div>
+            <div class="col-6 col-md-3 mb-4">
+                <i class="devicon-git-plain devicon"></i> <!-- Git -->
+            </div>
+            <div class="col-6 col-md-3 mb-4">
+                <i class="devicon-gitlab-plain devicon"></i> <!-- Gitlab -->
+            </div>
+        </div>
+    </section>
+
     <!-- Contacts Section -->
-    <section id="contacts" class="section text-center">
+    <section id="contacts" class="section bg-light text-center">
         <div class="container">
             <h2>Contacts</h2>
             <p>Email: <a href="mailto:diogovieiraengineer@gmail.com">diogovieiraengineer@gmail.com</a></p>
@@ -164,7 +233,7 @@
     </section>
 
     <!-- Social Section -->
-    <section id="social" class="section text-center">
+    <section id="social" class="section bg-light text-center">
         <div class="container">
             <h2>Social</h2>
             <p>
@@ -175,9 +244,7 @@
     </section>
 
     <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
