@@ -1,253 +1,815 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diogo Vieira</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <link href="css/styles.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/devicon@2.14.0/devicon.min.css">
-    <style>
-        body {
-            padding-top: 56px;
-            font-family: 'Roboto', sans-serif;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Diogo Vieira — Software Engineer</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-        .profile-img {
-            max-width: 250px;
-            border-radius: 50%;
-            margin-right: 60px;
-            /* Add margin-right for spacing */
-            margin-bottom: 20px;
-        }
+    :root {
+      --bg: #0a0a0c;
+      --bg-elevated: #111114;
+      --bg-card: #16161a;
+      --surface: #1c1c21;
+      --border: #2a2a32;
+      --border-accent: #3d3d48;
+      --text-primary: #e8e6e3;
+      --text-secondary: #8a8a95;
+      --text-muted: #55555f;
+      --accent: #64ffda;
+      --accent-dim: #64ffda22;
+      --accent-mid: #64ffda44;
+      --warm: #ffd166;
+      --coral: #ff6b6b;
+      --blue: #6ec1e4;
+      --font-display: 'Outfit', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
 
-        .section {
-            padding: 40px 0;
-        }
+    html { scroll-behavior: smooth; }
 
-        h2 {
-            font-weight: 700;
-            /* Bold */
-        }
+    body {
+      font-family: var(--font-display);
+      background: var(--bg);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        p {
-            font-weight: 400;
-            /* Normal */
-        }
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--border-accent); border-radius: 3px; }
 
-        .devicon {
-            font-size: 48px;
-            /* Adjust the size as needed */
-            margin: 0 auto;
-            /* Center the icons */
-            display: block;
-            /* Ensure icons are block-level elements */
-        }
-    </style>
+    /* Grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    #app { min-height: 100vh; }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.2rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(20px);
+      background: #0a0a0ccc;
+      border-bottom: 1px solid var(--border);
+      transition: transform 0.3s ease;
+    }
+
+    .logo {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .logo span { color: var(--text-muted); }
+
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0; height: 1px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 0 clamp(2rem, 8vw, 8rem);
+      position: relative;
+    }
+
+    .hero-grid-bg {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.15;
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black 20%, transparent 80%);
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--accent-dim) 0%, transparent 70%);
+      top: 20%; right: 10%;
+      filter: blur(80px);
+      animation: float 8s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-30px) scale(1.05); }
+    }
+
+    .hero-content { position: relative; z-index: 2; max-width: 800px; }
+
+    .hero-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .hero-tag::before {
+      content: '';
+      width: 40px; height: 1px;
+      background: var(--accent);
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -2px;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 .outline {
+      -webkit-text-stroke: 1.5px var(--text-secondary);
+      color: transparent;
+    }
+    .hero h1 .accent { color: var(--accent); }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 550px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 0.9rem 2rem;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--bg);
+      font-weight: 600;
+    }
+    .btn-primary:hover {
+      box-shadow: 0 0 30px var(--accent-mid);
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border-accent);
+    }
+    .btn-ghost:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* SECTION LAYOUT */
+    section { padding: clamp(4rem, 10vw, 8rem) clamp(2rem, 8vw, 8rem); }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .section-label::before {
+      content: '';
+      width: 24px; height: 1px;
+      background: var(--accent);
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -1px;
+      margin-bottom: 3rem;
+    }
+
+    /* ABOUT */
+    .about { background: var(--bg-elevated); border-top: 1px solid var(--border); }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .about-text {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+    .about-text p + p { margin-top: 1.2rem; }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 1.8rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px; height: 100%;
+      background: var(--accent);
+      transform: scaleY(0);
+      transform-origin: top;
+      transition: transform 0.3s ease;
+    }
+    .stat-card:hover::before { transform: scaleY(1); }
+    .stat-card:hover { border-color: var(--border-accent); }
+
+    .stat-number {
+      font-family: var(--font-mono);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.3rem;
+    }
+
+    .stat-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* SKILLS */
+    .skills-container { display: flex; flex-direction: column; gap: 2rem; }
+
+    .skill-category {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 2rem;
+      transition: border-color 0.3s;
+    }
+    .skill-category:hover { border-color: var(--border-accent); }
+
+    .skill-category-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .skill-icon {
+      width: 36px; height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-mid);
+      color: var(--accent);
+    }
+
+    .skill-category-name {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+
+    .skill-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.45rem 0.9rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+      transition: all 0.25s ease;
+      cursor: default;
+    }
+    .skill-tag:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    /* PROJECTS */
+    .projects { background: var(--bg-elevated); border-top: 1px solid var(--border); }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 2.2rem;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.35s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .project-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--blue));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .project-card:hover { border-color: var(--border-accent); transform: translateY(-4px); }
+    .project-card:hover::after { transform: scaleX(1); }
+
+    .project-year {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      letter-spacing: 2px;
+      margin-bottom: 0.75rem;
+    }
+
+    .project-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+      letter-spacing: -0.5px;
+    }
+
+    .project-desc {
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+      flex: 1;
+    }
+
+    .project-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+    .stack-tag {
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      padding: 0.3rem 0.6rem;
+      background: var(--accent-dim);
+      border: 1px solid var(--accent-mid);
+      color: var(--accent);
+      letter-spacing: 0.5px;
+    }
+
+    /* EXPERIENCE */
+    .experience-item {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 3rem;
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .experience-item:last-child { border-bottom: none; }
+
+    .exp-period {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+    .exp-company {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      margin-top: 0.3rem;
+    }
+
+    .exp-role {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+      letter-spacing: -0.5px;
+    }
+
+    .exp-desc {
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    /* CONTACT */
+    .contact { background: var(--bg-elevated); border-top: 1px solid var(--border); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+
+    .contact-text {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.8;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.2rem 1.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--text-secondary);
+      transition: all 0.3s ease;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+    }
+    .contact-link:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateX(6px);
+    }
+    .contact-link-icon {
+      color: var(--accent);
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 2rem clamp(2rem, 8vw, 8rem);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-text {
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+
+    /* ANIMATIONS */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .stagger-1 { transition-delay: 0.1s; }
+    .stagger-2 { transition-delay: 0.2s; }
+    .stagger-3 { transition-delay: 0.3s; }
+    .stagger-4 { transition-delay: 0.4s; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .experience-item { grid-template-columns: 1fr; gap: 0.5rem; }
+      .projects-grid { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
-
 <body>
+  <div id="app">
+    <!-- NAV -->
+    <nav>
+      <div class="logo">DV<span>.</span></div>
+      <div class="nav-links">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#experience">Experience</a>
+        <a href="#contact">Contacts</a>
+      </div>
+    </nav>
 
-    <!-- Navigation Bar -->
-    <!--<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <div class="container">
-            <a class="navbar-brand" href="#">Diogo Vieira</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarResponsive">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#bio">Bio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#projects">Projects</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#academic">Academic Experience</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#professional">Professional Experience</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#skills">Skills</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#contacts">Contacts</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#social">Social</a>
-                    </li>
-                </ul>
-            </div>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-grid-bg"></div>
+      <div class="hero-glow"></div>
+      <div class="hero-content">
+        <div class="hero-tag fade-up">Software Engineer</div>
+        <h1 class="fade-up stagger-1">
+          Diogo<br>
+          <span class="outline">Vieira</span><span class="accent">.</span>
+        </h1>
+        <p class="hero-desc fade-up stagger-2">
+          Computer Science & Engineering student with focus on full-stack development,
+          REST API design and system integration.
+        </p>
+        <div class="hero-cta fade-up stagger-3">
+          <a href="#projects" class="btn btn-primary">See Projects ↓</a>
+          <a href="#contact" class="btn btn-ghost">Contact</a>
         </div>
-    </nav>-->
-
-    <!-- Bio Section -->
-    <section id="bio" class="section mt-5 text-end">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 col-12 mb-3 clearfix">
-                    <img src="assets/images/Ativo 2.png" alt="Profile Photo"
-                        class="profile-img img-fluid mx-auto d-block">
-                </div>
-                <div class="col-md-8 col-12">
-                    <h2 class="text-start">Diogo Vieira</h2>
-                    <p class="text-justify">I'm Diogo, 27 years old. In 2020, I made a shift towards Computer
-                        Science & Engineering to establish myself in this field as a Software Engineer. My educational
-                        journey
-                        has provoqued a change of paradigm in my way of thinking and the way I aproach new challenges.
-                        I'm eager to begin a tech career, where I can apply my creativity and technical skills to make real
-                        contributes to the industry by always aplying the best practices and methodologies in the field.
-                        <strong>I’m currently search for a Summer Internship opportunity.</strong>
-                    </p>
-                </div>
-            </div>
-        </div>
+      </div>
     </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="section bg-light">
-        <div class="container">
-            <h2 class="text-center">Projects</h2>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Recicla Têxtil</h5>
-                            <p class="card-text">In this project I was responsible for writing the controllers in the
-                                backend
-                                and helping out in the frontend...</p>
-                            <a href="https://github.com/DiogoVieira81/ReciclaTextil.git" class="btn btn-primary"
-                                target="_blank">View Project</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="card-title">Robocode - A.I robot</h5>
-                            <p class="card-text">In this project I was responsible for creating the robot that would
-                                generate
-                                the training dataset...</p>
-                            <a href="https://github.com/heyliceeee/robocodeIA.git" class="btn btn-primary"
-                                target="_blank">View Project</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- ABOUT -->
+    <section class="about" id="about">
+      <div class="section-label fade-up">About me</div>
+      <h2 class="section-title fade-up stagger-1">Engineer under<br>construction<span style="color:var(--accent)">.</span></h2>
+      <div class="about-grid">
+        <div class="about-text fade-up stagger-2">
+          <p>
+            Final year Computer Science & Engineering student at ESTG-Polytechnic Institute of Porto.
+            With training that crosses design and technology, I bring a practical and detail oriented perspective to each project.
+          </p>
+          <p>
+            Currently enroled in an internship in the telecomunications field, where I apply 
+            my skills in software arquitecture, database and agile development in a real context. 
+          </p>
         </div>
+        <div class="stats-grid fade-up stagger-3">
+          <div class="stat-card" v-for="stat in stats" :key="stat.label">
+            <div class="stat-number">{{ stat.value }}</div>
+            <div class="stat-label">{{ stat.label }}</div>
+          </div>
+        </div>
+      </div>
     </section>
 
-
-    <!-- Academic Experience Section -->
-    <section id="academic" class="section bg-light text-center">
-        <div class="container">
-            <h2>Academic Experience</h2>
+    <!-- SKILLS -->
+    <section class="skills" id="skills">
+      <div class="section-label fade-up">Skills</div>
+      <h2 class="section-title fade-up stagger-1">Tech<br>Stack<span style="color:var(--accent)">.</span></h2>
+      <div class="skills-container">
+        <div class="skill-category fade-up" v-for="(cat, i) in skillCategories" :key="cat.name" :class="'stagger-' + (i % 4 + 1)">
+          <div class="skill-category-header">
+            <div class="skill-icon">{{ cat.icon }}</div>
+            <div class="skill-category-name">{{ cat.name }}</div>
+          </div>
+          <div class="skill-tags">
+            <span class="skill-tag" v-for="skill in cat.skills" :key="skill">{{ skill }}</span>
+          </div>
         </div>
-    </section>
-    <section id="academic2" class="section text-start">
-        <div class="container">
-            <h6>Bachelor’s degree - Computer Science & Engineering | ESTG-Polytechnic of Porto | 2020-25</h6>
-            <p class="text-justify">In this bachelor’s degree, which I’m currently undergoing, I had the opportunity to
-                experiment with various programming languages from C to Python and SQL while also learn about software
-                engineering, Agile, Scrum, Project Management, Data Science among other subjects. I’m the most
-                comfortable working with Java.</p>
-            <h6>CET - Footwear Design | CFPIC | oct 2017 a set 2018 (16)</h6>
-            <p class="text-justify">In this 1-year course I got the opportunity to learn about the creative process
-                involved in footwear design, from marketing, developing a brand, the definition of the design concept to
-                the development of the shoe, pattern making manually and with Computer Aided Design both in women’s and
-                men’s footwear, graphic design learning Adobe Photoshop, Adobe Illustrator and InDesign.
-            </p>
-        </div>
+      </div>
     </section>
 
-    <!-- Professional Experience Section -->
-    <section id="professional" class="section bg-light text-center">
-        <div class="container">
-            <h2>Professional Experience</h2>
+    <!-- PROJECTS -->
+    <section class="projects" id="projects">
+      <div class="section-label fade-up">Projects</div>
+      <h2 class="section-title fade-up stagger-1">Academic<br>work<span style="color:var(--accent)">.</span></h2>
+      <div class="projects-grid">
+        <div class="project-card fade-up" v-for="(project, i) in projects" :key="project.name" :class="'stagger-' + (i % 4 + 1)">
+          <div class="project-year">{{ project.year }}</div>
+          <div class="project-name">{{ project.name }}</div>
+          <div class="project-desc">{{ project.desc }}</div>
+          <div class="project-stack">
+            <span class="stack-tag" v-for="tag in project.stack" :key="tag">{{ tag }}</span>
+          </div>
         </div>
-    </section>
-    <section id="professional2" class="section text-start">
-        <div class="container">
-            <h6>Store Operator | Mercadona | Feb 2023 – Sept 2024</h6>
-            <p class="text-justify">In this role I’m responsible mainly for cleaning the store in the early morning
-                period before the opening but I’m also trained as a fishmonger, cashier, and stocker.
-            </p>
-            <h6>Store Operator | Sonae MC | Jun 2021 to Jun 2022</h6>
-            <p class="text-justify">In this role I was responsible for serving the customer as a Charcuterie and for
-                closing the section, cleaning and organizing everything according to the company’s guidelines.
-            </p>
-            <h6>Technical Illustrator | Diferentefeito | Oct 2018 to Oct 2020</h6>
-            <p class="text-justify">In this role I was responsible for preparing the samples requested by the customer.
-                It involved the compilation of the material and accessory lists for production and the definition of
-                suitable work methods. I was also responsible for maintaining contact with the customer regarding any
-                technical issues involved in the product development and to maintain support for the quality control of
-                the production process.
-            </p>
-        </div>
+      </div>
     </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="section bg-light text-center">
-        <div class="container">
-            <h2>Skills</h2>
+    <!-- EXPERIENCE -->
+    <section class="experience" id="experience">
+      <div class="section-label fade-up">Experience</div>
+      <h2 class="section-title fade-up stagger-1">Profissional<br>career<span style="color:var(--accent)">.</span></h2>
+      <div class="experience-item fade-up stagger-2" v-for="exp in experience" :key="exp.role">
+        <div>
+          <div class="exp-period">{{ exp.period }}</div>
+          <div class="exp-company">{{ exp.company }}</div>
         </div>
-    </section>
-    <section id="skills2" class="section text-start">
-        <div class="row text-center">
-            <div class="col-6 col-md-3 mb-4">
-                <i class="devicon-c-plain devicon"></i> <!-- C -->
-            </div>
-            <div class="col-6 col-md-3 mb-4">
-                <i class="devicon-java-plain devicon"></i> <!-- Java -->
-            </div>
-            <div class="col-6 col-md-3 mb-4">
-                <i class="devicon-nodejs-plain devicon"></i> <!-- NodeJS -->
-            </div>
-            <div class="col-6 col-md-3 mb-4">
-                <i class="devicon-angularjs-plain devicon"></i> <!-- Angular -->
-            </div>
-            <div class="col-6 col-md-3 mb-4">
-                <i class="devicon-mongodb-plain devicon"></i> <!-- MongoDB -->
-            </div>
-            <div class="col-6 col-md-3 mb-4">
-                <i class="devicon-python-plain devicon"></i> <!-- Python -->
-            </div>
-            <div class="col-6 col-md-3 mb-4">
-                <i class="devicon-git-plain devicon"></i> <!-- Git -->
-            </div>
-            <div class="col-6 col-md-3 mb-4">
-                <i class="devicon-gitlab-plain devicon"></i> <!-- Gitlab -->
-            </div>
+        <div>
+          <div class="exp-role">{{ exp.role }}</div>
+          <div class="exp-desc">{{ exp.desc }}</div>
         </div>
+      </div>
     </section>
 
-    <!-- Contacts Section -->
-    <section id="contacts" class="section bg-light text-center">
-        <div class="container">
-            <h2>Contacts</h2>
-            <p>Email: <a href="mailto:diogo.xavier.vieira.dev@gmail.com">diogo.xavier.vieira.dev@gmail.com</a></p>
+    <!-- CONTACT -->
+    <section class="contact" id="contact">
+      <div class="section-label fade-up">Contact</div>
+      <h2 class="section-title fade-up stagger-1">Let's<br>chat<span style="color:var(--accent)">.</span></h2>
+      <div class="contact-grid">
+        <div class="contact-text fade-up stagger-2">
+          I'm open to internship opportunities, junior positions e colaborative projects. 
+          If you have something in mind, contact me.
         </div>
+        <div class="contact-links fade-up stagger-3">
+          <a class="contact-link" href="mailto:diogo.vieira.dev@outlook.pt">
+            <span class="contact-link-icon">✉</span>
+            diogo.vieira.dev@outlook.pt
+          </a>
+          <a class="contact-link" href="https://linkedin.com/in/diogo-vieira-dev" target="_blank">
+            <span class="contact-link-icon">in</span>
+            linkedin.com/in/diogo-vieira-dev
+          </a>
+          <a class="contact-link" href="https://github.com/DiogoVieira81" target="_blank">
+            <span class="contact-link-icon">⟨/⟩</span>
+            github.com/DiogoVieira81
+          </a>
+          <a class="contact-link" href="tel:+351930674569">
+            <span class="contact-link-icon">☎</span>
+            +351 930 674 569
+          </a>
+        </div>
+      </div>
     </section>
 
-    <!-- Social Section -->
-    <section id="social" class="section bg-light text-center">
-        <div class="container">
-            <h2>Social</h2>
-            <p>
-                <a href="https://www.linkedin.com/in/diogo-vieira-dev/" target="_blank">LinkedIn</a> |
-                <a href="https://github.com/DiogoVieira81" target="_blank">GitHub</a>
-            </p>
-        </div>
-    </section>
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-text">© 2026 Diogo Vieira</div>
+      <div class="footer-text">Felgueiras, Portugal</div>
+    </footer>
+  </div>
 
-    <!-- Bootstrap JS and dependencies -->
-    <script src="js/bootstrap.bundle.min.js"></script>
+  <script>
+    const { createApp, ref, onMounted } = Vue;
+
+    createApp({
+      setup() {
+        const stats = ref([
+          { value: '3+', label: 'Full-Stack Projects' },
+          { value: '5+', label: 'Technologies' },
+          { value: 'BSc', label: 'Computer & Science' },
+          { value: '2026', label: 'Graduation' }
+        ]);
+
+        const skillCategories = ref([
+          {
+            name: 'Backend & APIs',
+            icon: '⚙',
+            skills: ['.NET 8', 'C#', 'Java', 'Laravel', 'PHP', 'REST API', 'JSON/XML', 'Web Services']
+          },
+          {
+            name: 'Frontend',
+            icon: '◈',
+            skills: ['Vue.js', 'Angular', 'TypeScript', 'HTML/CSS', 'PrimeVue', 'Tailwind CSS']
+          },
+          {
+            name: 'Mobile',
+            icon: '▣',
+            skills: ['Kotlin', 'Android', 'Jetpack Compose', 'Firebase', 'MVVM', 'Room Database']
+          },
+          {
+            name: 'Bases de Dados',
+            icon: '⊞',
+            skills: ['Entity Framework', 'SQL', 'MongoDB', 'Database Design']
+          },
+          {
+            name: 'DevOps & Ferramentas',
+            icon: '⟐',
+            skills: ['Git', 'GitLab CI/CD', 'Gradle', 'Docker', 'Linux', 'Visual Studio', 'VS Code']
+          },
+          {
+            name: 'Metodologias',
+            icon: '△',
+            skills: ['TDD', 'Scrum', 'Clean Architecture', 'UML', 'xUnit', 'JUnit']
+          }
+        ]);
+
+        const projects = ref([
+          {
+            name: 'CCaaS Platform',
+            year: '2025 — Internship',
+            desc: 'Contact Center Platform as a Service with Vicidial integration, real-time speech-to-text transcription and WebSockets.',
+            stack: ['Laravel', 'Vue.js', 'Groq Whisper', 'WebSockets', 'PrimeVue']
+          },
+          {
+            name: 'CTO — Marketplace',
+            year: '2025',
+            desc:'E-commerce Marketplace with authentication, transactional workflows, .NET REST API and Angular frontend.',
+            stack: ['.NET 8', 'C#', 'Entity Framework', 'Angular', 'xUnit']
+          },
+          {
+            name: 'GeoChat',
+            year: '2025',
+            desc: 'Real-time chat app with geographical based proximity, with API REST and Android client in Kotlin.',
+            stack: ['Kotlin', 'Firebase', 'Mapbox', 'MVVM', 'Retrofit', 'Room']
+          },
+          {
+            name: 'Carbon Calculator',
+            year: '2025',
+            desc: 'Logistical operation carbon emission calculation system, with TDD focus and test coverage. ',
+            stack: ['Java', 'JUnit', 'Gradle', 'TDD', 'CI/CD']
+          }
+        ]);
+
+        const experience = ref([
+          {
+            period: 'Feb 2026 — Present',
+            company: 'Techbase, Braga',
+            role: 'Internship — Software Engineer',
+            desc: 'Development of a CCaaS platform integrated with VICIdial. Stack Laravel + Vue.js with real-time voice transcription and WebSockets. '
+          },
+          {
+            period: '2018 — 2020',
+            company: 'Diferentefeito, Portugal',
+            role: 'Technical Illustrator',
+            desc: 'Supervised and coordinated a team of up to 6 employees on a daily basis, including task allocation and workflow management. Served as the main technical point of contact for clients regarding production details and design specifications.'
+          }
+        ]);
+
+        // Intersection Observer for scroll animations
+        onMounted(() => {
+          const observer = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add('visible');
+                }
+              });
+            },
+            { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+          );
+
+          document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+        });
+
+        return { stats, skillCategories, projects, experience };
+      }
+    }).mount('#app');
+  </script>
 </body>
-
 </html>
